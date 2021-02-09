@@ -1,0 +1,28 @@
+
+### Django ###
+# 데이터베이스 항목 한개
+# 최상위 디렉토리에 존재한다
+/db.sqlite3
+
+# django secrets
+# 어디에 있는지 모르지만 settings 폴더안에 있는 json만 처리
+**/settings/secrets.json
+
+# collectstatic 명령으로 모이는 스태틱 디렉토리
+# 최상의 디렉토리에 존재하는 static만 ignore 처리한다
+/static
+
+# 최상의 디렉토리에 있는 media 폴더 한개
+/media
+
+# 여러곳에 존재하는 파이썬 캐시파일
+__pycache__/
+
+# 최상위 디렉토리만에 생성되는 vscode 관련 설정
+/.vscode
+
+# 최상위 디렉토리에 생성되는 pycharm 관련 설정
+/.idea
+
+# 최상위 디렉토리에 생성되는 pyenv virtualenv 에 관련한 내용
+/.python-version
