@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 3rd apps
+    # 3rd
+    "bootstrap4",
     "debug_toolbar",
     # local apps
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -96,6 +98,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "accounts.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -134,7 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIR = [
+STATICFILES_DIRS = [
     BASE_DIR / "asklecture" / "static/",
 ]
 STATIC_ROOT = BASE_DIR / "static/"
