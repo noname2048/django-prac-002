@@ -32,7 +32,7 @@ except:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 
 # Application definition
@@ -148,3 +148,19 @@ MEDIA_ROOT = BASE_DIR / "media/"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+try:
+    SENDGRID_API_KEY = json.load(open(SECRET_DIR))["SENDGRID_API_KEY"]
+except:
+    raise ImproperlyConfigured("SECRET_KEY NOT FOUND!")
+
+
+SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+
+# EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "apikey"
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "sungwook.csw@noname2048.dev"

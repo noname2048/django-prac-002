@@ -15,6 +15,7 @@ if settings.DEBUG:
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
         path("accounts/", include("accounts.urls")),
+        path("hi/", include("accounts.urls")),
         path("", login_required(TemplateView.as_view(template_name="root.html")), name="root"),
     ]
 

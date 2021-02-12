@@ -5,4 +5,6 @@ app_name = "accounts"
 
 urlpatterns = [
     path("signup/", views.signup, name="signup"),
+    path("email/", views.test_mail, name="mail"),
+    path("", views.root, name="root"),
 ]
