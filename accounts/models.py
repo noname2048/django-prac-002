@@ -11,9 +11,8 @@ class User(AbstractUser):
 
     def send_welcom_email(self):
         subject = "회원가입을 환영합니다 test"
-        content = "환영환영~"
-        sender_email = "sungwook@noname2048.dev"
+        content = f"{self.username}님의 회원가입을 환영합니다."
+        sender_email = settings.DEFAULT_FROM_EMAIL
         return send_mail(subject, content, sender_email, [self.email], fail_silently=False)
-        pass
 
     # TODO: POST_SAVE signal

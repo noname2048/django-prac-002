@@ -1,12 +1,28 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, resolve_url
 from django.core.mail import send_mail
-
+from django.contrib.auth.views import LoginView, logout_then_login
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from .forms import SignupForm
+from django.contrib.auth import login as auth_login
 
 
-def root(request):
-    return render(request, "accounts/none.html", {})
+@login_required
+def accounts_root(request):
+    return render(request, "accounts/accounts_root.html", {})
+
+
+class AcountLoginView(LoginView):
+    template_name = "accounts/login_form.html"
+
+
+login = LoginView.as_view(template_name="accounts/login_form.html")
+
+
+def logout(request):
+    messages.success(request, "성공적으로 로그아웃 하였습니다.")
+    return logout_then_login(request)
 
 
 def signup(request):
@@ -15,12 +31,18 @@ def signup(request):
         if form.is_valid():
             signed_user = form.save(commit=False)
 
-            messages.success(request, f"Welcome {signed_user.username}")
+            try:
+                signed_user.send_welcom_email()
+                signed_user.save()
 
-            if signed_user.send_welcom_email() == 1:  # FIXME: selary 로 하기
+                messages.success(request, f"{signed_user.username}님의 가입을 환영합니다.")
+
+                auth_login(request, signed_user)
+
                 next_url = request.GET.get("next", "/")
                 return redirect(next_url)
-            else:
+            except:
+                messages.warning(request, f"이메일 발송에 문제가 있습니다.")
                 form = SignupForm()
     else:
         form = SignupForm()
