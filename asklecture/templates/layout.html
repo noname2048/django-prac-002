@@ -38,6 +38,7 @@
             {% if user.username %}
                 {% if user.avatar %}
                     <img src="{{ user.avatar.url }}" style="width: 3rem; height: 3rem;">
+                    <img src="{{ user.avatar_thumbnail.url }}" >
                 {% else %}
                     <a class="" style="text-decoration: none;" href="{% url "accounts:profile_edit" %}">
                         <img src="{% url "pydenticon_image" user.username %}" style="height: 3rem">

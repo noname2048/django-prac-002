@@ -4,6 +4,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.template.loader import render_to_string
 from django.core.validators import RegexValidator
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFill, Thumbnail
 
 
 class User(AbstractUser):
@@ -27,6 +29,13 @@ class User(AbstractUser):
         blank=True,
         upload_to="accounts/profile/%y/%m/%d/%S",
         help_text="48px * 48px 크기의 png/jpg 파일을 업로드 해주세요.",
+    )
+    avatar_thumbnail = ImageSpecField(
+        # upload_to="accounts/profile/%y/%m/%d/%S_thumnail",
+        source="avatar",
+        processors=[ResizeToFill(50, 50)],
+        format="JPEG",
+        options={"quality": 100},
     )
 
     def send_welcom_email(self):
