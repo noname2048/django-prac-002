@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.views import LoginView, logout_then_login
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .forms import SignupForm
+from .forms import SignupForm, ProfileForm
 from django.contrib.auth import login as auth_login
 
 
@@ -64,3 +64,22 @@ def test_mail(request):
 
     next_url = request.GET.get("next", resolve_url("accounts:root"))
     return redirect(next_url)
+
+
+@login_required
+def profile_edit(request):
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "프로필을 수정/저장 하였습니다.")
+            return redirect("accounts:profile_edit")
+    else:
+        form = ProfileForm(instance=request.user)
+    return render(
+        request,
+        "accounts/profile_edit_form.html",
+        {
+            "form": form,
+        },
+    )

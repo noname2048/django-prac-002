@@ -1,7 +1,7 @@
 {% load bootstrap4 %}
 
 <div class="card" style="width: 18rem;">
-    {% if from_title %}
+    {% if form_title %}
     <div class="card-header">
         <p>{{ form_title }}</p>
     </div>
@@ -9,12 +9,19 @@
     <div class="card-body">
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">
-                    {{ submit_lable|default:"Submit" }}
-                </button>
-            {% endbuttons %}
+            {% if form%}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                        {{ submit_lable|default:"Submit" }}
+                    </button>
+                {% endbuttons %}
+            {% else %}
+                <div class="alert alert-error">
+                    form 객체를 지정해주세요
+                </div>
+            {% endif %}
+            
         </form>
         </ul>
     </div>

@@ -20,4 +20,4 @@ if settings.DEBUG:
         path("identicon/image/<path:data>/", pydenticon_image, name="pydenticon_image"),
     ]
 
-    urlpatterns += static(settings.MEDIA_URL, documments_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
