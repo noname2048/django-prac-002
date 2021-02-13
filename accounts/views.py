@@ -1,28 +1,43 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, resolve_url
 from django.core.mail import send_mail
-from django.contrib.auth.views import LoginView, logout_then_login
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from .forms import SignupForm, ProfileForm
+from django.urls import reverse, reverse_lazy
+from .forms import PasswordChangeForm, SignupForm, ProfileForm
 from django.contrib.auth import login as auth_login
+
+from django.utils.http import (
+    url_has_allowed_host_and_scheme,
+    urlsafe_base64_decode,
+)
+
+from django.conf import settings
+import logging
+
+logger = logging.getLogger("django.server")
 
 
 @login_required
 def accounts_root(request):
+    logger.info("logout!")
     return render(request, "accounts/accounts_root.html", {})
 
 
-class AcountLoginView(LoginView):
+class LoginView(auth_views.LoginView):
     template_name = "accounts/login_form.html"
 
 
-login = LoginView.as_view(template_name="accounts/login_form.html")
+login = LoginView.as_view()
 
 
 def logout(request):
     messages.success(request, "성공적으로 로그아웃 하였습니다.")
-    return logout_then_login(request)
+    return auth_views.logout_then_login(
+        request, login_url=f'{reverse("accounts:login")}?next={reverse("accounts:root")}'
+    )
 
 
 def signup(request):
@@ -83,3 +98,16 @@ def profile_edit(request):
             "form": form,
         },
     )
+
+
+class PasswordChangeView(LoginRequiredMixin, auth_views.PasswordChangeView):
+    success_url = reverse_lazy("accounts:password_change")
+    template_name = "accounts/password_change_form.html"
+    form_class = PasswordChangeForm
+
+    def form_valid(self, form):
+        messages.success(self.request, "암호를 변경했습니다.")
+        return super().form_valid(form)
+
+
+password_change = PasswordChangeView.as_view()
