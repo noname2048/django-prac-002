@@ -1,0 +1,28 @@
+{% load bootstrap4 %}
+
+<div class="card" style="width: 18rem;">
+    {% if label %}
+    <div class="card-header">
+        <p>{{ label }}</p>
+    </div>
+    {% endif %}
+    <div class="card-body">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form%}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">
+                        {{ label|default:"Submit" }}
+                    </button>
+                {% endbuttons %}
+            {% else %}
+                <div class="alert alert-error">
+                    form 객체를 지정해주세요
+                </div>
+            {% endif %}
+            
+        </form>
+        </ul>
+    </div>
+</div>
