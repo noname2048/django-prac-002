@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.core.validators import RegexValidator
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, Thumbnail
+from django.shortcuts import resolve_url
 
 
 class User(AbstractUser):
@@ -37,6 +38,17 @@ class User(AbstractUser):
         format="JPEG",
         options={"quality": 100},
     )
+
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        else:
+            resolve_url("pydenticon_image", self.username)
 
     def send_welcom_email(self):
         subject = "회원가입을 환영합니다 test"

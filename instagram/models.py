@@ -14,6 +14,10 @@ class Post(models.Model):
     def __str__(self):
         return self.caption
 
+    @property
+    def author_name(self):
+        return f"{self.author.name}"
+
     def get_absolute_url(self):
         return reverse("instagram:detail", kwargs={"pk": self.pk})
 
