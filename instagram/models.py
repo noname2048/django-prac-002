@@ -19,7 +19,7 @@ class Post(models.Model):
         return f"{self.author.name}"
 
     def get_absolute_url(self):
-        return reverse("instagram:detail", kwargs={"pk": self.pk})
+        return reverse("instagram:post_detail", kwargs={"pk": self.pk})
 
     def extract_tag_list(self):
         tag_name_list = re.findall(r"#([a-zA-Z\dㄱ-힣]+)", self.caption)

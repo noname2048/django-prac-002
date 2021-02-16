@@ -26,3 +26,6 @@ __pycache__/
 
 # 최상위 디렉토리에 생성되는 pyenv virtualenv 에 관련한 내용
 /.python-version
+
+# .ipynb_checkpoints directory at everywhere
+.ipynb_checkpoints

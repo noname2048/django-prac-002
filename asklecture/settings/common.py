@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "django_pydenticon",
     "imagekit",
     "django_extensions",
+    "django_seed",
+    "easy_thumbnails",
     # local apps
     "accounts",
     "instagram",
@@ -169,23 +171,8 @@ EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "sungwook.csw@noname2048.dev"
 
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "handlers": {
-#         "console": {
-#             "class": "logging.StreamHandler",
-#         },
-#     },
-#     "root": {
-#         "handlers": ["console"],
-#         "level": "WARNING",
-#     },
-#     "loggers": {
-#         "django": {
-#             "handlers": ["console"],
-#             "level": "INFO",
-#             "propagate": False,
-#         },
-#     },
-# }
+THUMBNAIL_ALIASES = {
+    "": {
+        "avatar": {"size": (50, 50), "crop": True},
+    },
+}

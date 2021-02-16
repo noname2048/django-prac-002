@@ -1,0 +1,26 @@
+{% extends "instagram/layout.html" %}
+{% load thumbnail %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-3" style="text-align: center;">
+            <img src="{{ page_user.avatar_url }}" alt="" srcset="" class="rounded-circle" style="width: 100%">
+        </div>
+        <div class="col-9">
+            {{ page_user.username }}
+            <a href="{% url "accounts:profile_edit" %}" class="btn btn-second">Edit Profile</a>
+            <hr>
+            {{ post_list_count }} posts, 0 followers, 0 following
+            <hr>
+            {{ page_user.name }}
+        </div>
+        {%  for post in post_list %}
+            <div class="col-2 mb-5">
+                <img src="{{ post.photo.url }}" alt="" srcset="" style="width: 100%">
+                <img src="{% thumbnail post.photo 256x256 crop %}" alt="" srcset="" style="width: 100%">
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
