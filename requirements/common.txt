@@ -1,3 +1,8 @@
 Django==3.1.5
 django-bootstrap4==2.3.1
-sendgrid==6.6.0
+django-pydenticon==0.2
+Pillow==8.1.0
+django-imagekit==4.0.2
+Faker==6.1.1
+pylint-django==2.4.2
+easy-thumbnails==2.7.1

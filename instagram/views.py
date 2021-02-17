@@ -1,7 +1,7 @@
 from django.contrib.auth import login
 from django.shortcuts import get_object_or_404, render, redirect, resolve_url
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth import get_user_model, get_user
 from .models import Tag, Post
@@ -29,6 +29,7 @@ def index(request):
         .exclude(pk=request.user.pk)
         .exclude(pk__in=request.user.following_set.all())[:3]
     )
+    comment_form = CommentForm()
 
     return render(
         request,
@@ -36,6 +37,7 @@ def index(request):
         {
             "suggested_user_list": suggested_user_list,
             "post_list": post_list,
+            "comment_form": comment_form,
         },
     )
 
@@ -74,11 +76,14 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comment_form = CommentForm()
+
     return render(
         request,
         "instagram/post_detail.html",
         {
             "post": post,
+            "comment_form": comment_form,
         },
     )
 
@@ -119,3 +124,37 @@ def post_unlike(request, pk):
     post.like_user_set.remove(request.user)
     messages.success(request, f"좋아요를 취소했습니다. #post-{post.pk}")
     return redirect(request.META.get("REFFERER", "root"))
+
+
+@login_required
+def comment_new(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+
+            if request.is_ajax():
+                return render(
+                    request,
+                    "instagram/_comment.html",
+                    {
+                        "comment": comment,
+                    },
+                )
+
+            return redirect(comment.post)
+    else:
+        form = CommentForm()
+
+    return render(
+        request,
+        "instagram/comment_form.html",
+        {
+            "form": form,
+        },
+    )

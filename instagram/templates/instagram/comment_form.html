@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 offset-sm-2">
+
+                {% include "instagram/_form.html" with lable="댓글 쓰기" %}
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
