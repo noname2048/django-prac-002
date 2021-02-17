@@ -14,6 +14,10 @@ class User(AbstractUser):
         MAIL = "M", "남"
         FEMAILE = "F", "여"
 
+    follower_set = models.ManyToManyField(
+        "self", blank=True, symmetrical=False, related_name="following_set"
+    )
+
     website_url = models.URLField(blank=True)
     bio = models.TextField(blank=True)
     phone_number = models.CharField(
@@ -48,7 +52,7 @@ class User(AbstractUser):
         if self.avatar:
             return self.avatar.url
         else:
-            resolve_url("pydenticon_image", self.username)
+            return resolve_url("pydenticon_image", self.username)
 
     def send_welcom_email(self):
         subject = "회원가입을 환영합니다 test"
